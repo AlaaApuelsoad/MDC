@@ -9,6 +9,7 @@ public class Service {
 
     public void createUser(User user) {
         log.info("Get user information from controller : {}", user);
+        log.info("TenantContext info : {}", TenantContext.getTenantInfo());
         //database operation
         log.info("User saved to database");
     }

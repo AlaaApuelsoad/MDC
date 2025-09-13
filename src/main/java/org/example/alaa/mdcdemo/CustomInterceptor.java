@@ -27,6 +27,8 @@ public class CustomInterceptor implements HandlerInterceptor {
 //            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
 //            return false; // stop execution
 //        }
+        //should fill from securityContext
+        TenantContext.setTenantInfo(new TenantInfo(1,"Alaa",1));
         return true;
     }
 
@@ -56,5 +58,8 @@ public class CustomInterceptor implements HandlerInterceptor {
 //        logger.info("AfterCompletion: Request# ,{} finished with status {}",response.getHeader("X-Correlation-ID"),response.getStatus());
         //we can use MDC to get the correlation id from the thread
         logger.info("AfterCompletion: Request# ,{} finished with status {}", MDC.get("X-Correlation-ID"),response.getStatus());
+
+        //clear tenantContext
+        TenantContext.clear();
     }
 }
