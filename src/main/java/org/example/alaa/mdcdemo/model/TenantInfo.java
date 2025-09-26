@@ -1,4 +1,4 @@
-package org.example.alaa.mdcdemo;
+package org.example.alaa.mdcdemo.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

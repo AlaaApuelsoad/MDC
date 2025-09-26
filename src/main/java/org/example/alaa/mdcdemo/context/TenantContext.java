@@ -1,4 +1,6 @@
-package org.example.alaa.mdcdemo;
+package org.example.alaa.mdcdemo.context;
+
+import org.example.alaa.mdcdemo.model.TenantInfo;
 
 public class TenantContext {
     private static ThreadLocal<TenantInfo> tenantContext = new ThreadLocal<>();
