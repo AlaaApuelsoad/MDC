@@ -53,7 +53,7 @@ public class CustomInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        logger.info("PreHandler: Before Controller Request received for {}", request.getRequestURI());
+//        logger.info("PreHandler: Before Controller Request received for {}", request.getRequestURI());
 
         // Example of rejecting if no correlation id
         // if (request.getHeader("X-Correlation-ID") == null) {
@@ -77,7 +77,7 @@ public class CustomInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response,
                            Object handler, ModelAndView modelAndView) throws Exception {
-        logger.info("PostHandler: After Controller for request# {}", response.getHeader("X-Correlation-ID"));
+//        logger.info("PostHandler: After Controller for request# {}", response.getHeader("X-Correlation-ID"));
     }
 
     /**
@@ -95,10 +95,10 @@ public class CustomInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
                                 Object handler, Exception ex) throws Exception {
 
-        LogContext logContext = null;
+        LogContext logContext;
 
         // Only build log context if there was an exception (to avoid duplicate logging)
-        if (ex != null) {
+        if (ex == null) {
             logContext = LogContext.builder()
                     .timestamp(LocalDateTime.now().toString())
                     .correlationId(MDC.get("X-Correlation-ID"))
@@ -120,9 +120,6 @@ public class CustomInterceptor implements HandlerInterceptor {
             logger.info(objectMapper.writeValueAsString(logContext));
         }
 
-        // Always log completion summary
-        logger.info("AfterCompletion: Request# {} finished with status {}",
-                MDC.get("X-Correlation-ID"), response.getStatus());
 
         // Clean up tenant context (ThreadLocal)
         TenantContext.clear();
