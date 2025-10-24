@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.alaa.mdcdemo.service.Service;
 import org.example.alaa.mdcdemo.model.User;
+import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class Controller {
 
     @GetMapping("/get")
     public ResponseEntity<?> getUser() throws Exception {
-        log.info("Get request received for user");
+        log.info("Get request received for user {}",MDC.get("X-Correlation-ID"));
         service.getUser();
         return new ResponseEntity<>(HttpStatus.OK);
     }

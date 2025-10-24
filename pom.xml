@@ -46,6 +46,7 @@
             <scope>provided</scope>
         </dependency>
 
+        <!--for LocalStack integration-->
 <!--        <dependency>-->
 <!--            <groupId>net.logstash.logback</groupId>-->
 <!--            <artifactId>logstash-logback-encoder</artifactId>-->
