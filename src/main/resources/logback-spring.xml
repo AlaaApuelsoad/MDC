@@ -1,10 +1,7 @@
 <configuration scan="true">
 
-<!--    <property name="USER_HOME" value="${user.home}"/>-->
     <!-- Enable Spring Boot’s color converter for console -->
 <!--    <springProperty scope="context" name="LOG_FILE_PATH" source="logging.file.path" defaultValue="${USER_HOME}/app-logs"/>-->
-
-    <springProperty scope="context" name="LOG_FILE_PATH" source="logging.file.path" defaultValue="logs"/>
     <conversionRule conversionWord="clr" class="org.springframework.boot.logging.logback.ColorConverter"/>
     <conversionRule conversionWord="wex" class="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
 
@@ -20,11 +17,12 @@
     <!-- ==============================
          INFO LOG FILE (daily rotation)
     =============================== -->
+    <!--to make a log folder in the same project directory-->
     <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_FILE_PATH}/info.log</file>
+        <file>./logs/info.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- Create a new log file every day -->
-            <fileNamePattern>${LOG_FILE_PATH}/info.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>$./logs/info.%d{yyyy-MM-dd}.log</fileNamePattern>
 
             <!-- Keep logs for 30 days -->
             <maxHistory>30</maxHistory>
@@ -43,11 +41,12 @@
     <!-- ==============================
          ERROR LOG FILE (daily rotation)
     =============================== -->
+    <!--to make a log folder in the same project directory-->
     <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_FILE_PATH}/error.log</file>
+        <file>./logs/error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- Create a new log file every day -->
-            <fileNamePattern>${LOG_FILE_PATH}/error.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>./logs/error.%d{yyyy-MM-dd}.log</fileNamePattern>
 
             <!-- Keep logs for 30 days -->
             <maxHistory>30</maxHistory>
