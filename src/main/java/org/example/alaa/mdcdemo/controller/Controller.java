@@ -20,7 +20,7 @@ public class Controller {
 
     @PostMapping("/create")
     public ResponseEntity<?> createUser(@RequestBody User user, HttpServletRequest request) {
-        log.info("Creation request received for user {}", user);
+        log.info("In Controller: Creation request received for user {}", user);
         service.createUser(user);
         log.info("User {} created successfully", user);
         return new ResponseEntity<>(HttpStatus.CREATED);

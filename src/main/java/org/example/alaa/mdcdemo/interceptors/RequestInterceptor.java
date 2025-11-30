@@ -53,7 +53,7 @@ public class RequestInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-//        logger.info("PreHandler: Before Controller Request received for {}", request.getRequestURI());
+        logger.info("PreHandler: Before request reach controller - {}", request.getRequestURI());
 
         /**
          * Rejecting and stop execution if not CorrelationID Provided
@@ -76,7 +76,7 @@ public class RequestInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response,
                            Object handler, ModelAndView modelAndView) throws Exception {
-//        logger.info("PostHandler: After Controller for request# {}", response.getHeader("X-Correlation-ID"));
+        logger.info("PostHandler: After Controller process the request");
     }
 
     /**
@@ -94,6 +94,7 @@ public class RequestInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
                                 Object handler, Exception ex) throws Exception {
 
+        logger.info("AfterCompletion: After response generated");
         LoggingData loggingData;
 
         // Only build log context if there was an exception (to avoid duplicate logging)
