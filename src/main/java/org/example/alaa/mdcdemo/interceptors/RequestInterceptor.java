@@ -4,8 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.alaa.mdcdemo.context.TenantContext;
-import org.example.alaa.mdcdemo.model.LogContext;
-import org.example.alaa.mdcdemo.model.TenantInfo;
+import org.example.alaa.mdcdemo.model.LoggingData;
 import org.slf4j.Logger;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
@@ -37,9 +36,9 @@ import java.time.LocalDateTime;
  *  - MDC ensures each request has its own thread-bound logging context.
  */
 @Component
-public class CustomInterceptor implements HandlerInterceptor {
+public class RequestInterceptor implements HandlerInterceptor {
 
-    private static final Logger logger = org.slf4j.LoggerFactory.getLogger(CustomInterceptor.class);
+    private static final Logger logger = org.slf4j.LoggerFactory.getLogger(RequestInterceptor.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
@@ -63,9 +62,6 @@ public class CustomInterceptor implements HandlerInterceptor {
         //     response.setStatus(HttpServletResponse.SC_NO_CONTENT);
         //     return false; // stop execution
         // }
-
-        // Simulated user/tenant context (in real apps → populate from SecurityContext or JWT)
-        TenantContext.setTenantInfo(new TenantInfo(1, "Alaa", 1));
         return true;
     }
 
@@ -98,11 +94,11 @@ public class CustomInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
                                 Object handler, Exception ex) throws Exception {
 
-        LogContext logContext;
+        LoggingData loggingData;
 
         // Only build log context if there was an exception (to avoid duplicate logging)
         if (ex == null) {
-            logContext = LogContext.builder()
+            loggingData = LoggingData.builder()
                     .timestamp(LocalDateTime.now().toString())
                     .correlationId(MDC.get("X-Correlation-ID"))
                     .logger(logger.getName())
@@ -111,14 +107,14 @@ public class CustomInterceptor implements HandlerInterceptor {
                     .uri(request.getRequestURI())
                     .responseStatus(response.getStatus())
                     .responseTimMs(System.currentTimeMillis() - Long.parseLong(MDC.get("Start-Time")))
-                    .userId(TenantContext.getTenantInfo().getUserId())
-                    .userName(TenantContext.getTenantInfo().getUserName())
-                    .tenantId(TenantContext.getTenantInfo().getTenantId())
-                    .role("ROLE_USER")
+                    .userId(TenantContext.getTenantContext().getUserId())
+                    .userName(TenantContext.getTenantContext().getUserName())
+                    .tenantId(TenantContext.getTenantContext().getRealmId())
+                    .role(TenantContext.getTenantContext().getRole())
                     .build();
 
             // Structured JSON log for better parsing in ELK/Datadog
-            logger.info(objectMapper.writeValueAsString(logContext));
+            logger.info(objectMapper.writeValueAsString(loggingData));
         }
 
         // Clean up tenant context (ThreadLocal)

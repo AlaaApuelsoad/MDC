@@ -10,6 +10,7 @@
     =============================== -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
+            <!--get X-Correlation-ID value from MDC-->
             <pattern>%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} | %clr(%5p) | %clr(%-40.40logger{39}){cyan} | %clr([%X{X-Correlation-ID}]){yellow} | %clr(%msg%n){faint}</pattern>
         </encoder>
     </appender>

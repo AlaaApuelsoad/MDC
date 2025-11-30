@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.alaa.mdcdemo.context.TenantContext;
-import org.example.alaa.mdcdemo.model.LogContext;
+import org.example.alaa.mdcdemo.model.LoggingData;
 import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 
 @ControllerAdvice
 public class Handler {
@@ -23,7 +22,7 @@ public class Handler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleException(Exception e, HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
-        LogContext logContext = LogContext.builder()
+        LoggingData loggingData = LoggingData.builder()
                 .timestamp(LocalDateTime.now().toString())
                 .correlationId(MDC.get("X-Correlation-ID"))
                 .logger(logger.getName())
@@ -32,16 +31,16 @@ public class Handler {
                 .uri(request.getRequestURI())
                 .responseStatus(HttpStatus.BAD_REQUEST.value())
                 .responseTimMs(System.currentTimeMillis() - Long.parseLong(MDC.get("Start-Time")))
-                .userId(TenantContext.getTenantInfo().getUserId())
-                .userName(TenantContext.getTenantInfo().getUserName())
-                .tenantId(TenantContext.getTenantInfo().getTenantId())
-                .role("ROLE_USER")
+                .userId(TenantContext.getTenantContext().getUserId())
+                .userName(TenantContext.getTenantContext().getUserName())
+                .tenantId(TenantContext.getTenantContext().getRealmId())
+                .role(TenantContext.getTenantContext().getRole())
                 .errorType(e.getClass().getSimpleName())
                 .errorMessage(e.getMessage())
                 .rootCause(e.getCause() != null ? e.getCause().getMessage() : null)
                 .stackTrace(getStackTrace(e))
                 .build();
-        logger.error(objectMapper.writeValueAsString(logContext));
+        logger.error(objectMapper.writeValueAsString(loggingData));
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 

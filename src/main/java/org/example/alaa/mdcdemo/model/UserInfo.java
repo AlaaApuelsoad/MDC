@@ -1,15 +1,18 @@
 package org.example.alaa.mdcdemo.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TenantInfo {
+@Builder
+public class UserInfo {
 
-    private Integer tenantId;
+    private Integer realmId;
     private String userName;
     private Integer userId;
+    private String role;
 }

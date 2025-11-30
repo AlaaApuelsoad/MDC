@@ -11,7 +11,7 @@ public class Service {
 
     public void createUser(User user) {
         log.info("Get user information from controller : {}", user);
-        log.info("TenantContext info : {}", TenantContext.getTenantInfo());
+        log.info("UserContext info : {}", TenantContext.getTenantContext());
         //database operation
         log.info("User saved to database");
     }

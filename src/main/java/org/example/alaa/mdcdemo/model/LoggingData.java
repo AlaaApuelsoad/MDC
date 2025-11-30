@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class LogContext {
+public class LoggingData {
 
     private String timestamp;
     private String correlationId;

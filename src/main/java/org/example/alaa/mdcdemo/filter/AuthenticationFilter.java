@@ -4,7 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.alaa.mdcdemo.context.UserContext;
+import org.example.alaa.mdcdemo.context.TenantContext;
 import org.example.alaa.mdcdemo.model.UserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +40,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                     .role("admin")
                     .build();
 
-            UserContext.setUserContext(userInfo);
+            TenantContext.setTenantContext(userInfo);
 
             filterChain.doFilter(request, response);
 
