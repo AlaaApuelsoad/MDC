@@ -26,8 +26,6 @@ public class Handler {
         LogContext logContext = LogContext.builder()
                 .timestamp(LocalDateTime.now().toString())
                 .correlationId(MDC.get("X-Correlation-ID"))
-                .level("ERROR")
-                .environment("dev")
                 .logger(logger.getName())
                 .thread(Thread.currentThread().getName())
                 .httpMethod(request.getMethod())

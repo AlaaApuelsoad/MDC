@@ -2,8 +2,12 @@ package org.example.alaa.mdcdemo.context;
 
 import org.example.alaa.mdcdemo.model.TenantInfo;
 
+/**
+ * Simulated TenantContext Thread local
+ * in real apps will be populated form SecurityContext or JWTAuthentication Object
+ */
 public class TenantContext {
-    private static ThreadLocal<TenantInfo> tenantContext = new ThreadLocal<>();
+    private static final ThreadLocal<TenantInfo> tenantContext = new ThreadLocal<>();
 
 
     public static void setTenantInfo(TenantInfo tenantInfo) {

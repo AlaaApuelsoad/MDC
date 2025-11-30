@@ -22,7 +22,7 @@
         <file>./logs/info.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- Create a new log file every day -->
-            <fileNamePattern>$./logs/info.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>./logs/info.%d{yyyy-MM-dd}.log</fileNamePattern>
 
             <!-- Keep logs for 30 days -->
             <maxHistory>30</maxHistory>

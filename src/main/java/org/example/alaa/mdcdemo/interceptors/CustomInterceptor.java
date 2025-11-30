@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 /**
  * CustomInterceptor demonstrates how to use Spring MVC interceptors
  * to handle request/response lifecycle events and enhance logging.
+ * need to be registered in webConfig class
  *
  * Interceptor lifecycle:
  *  1. preHandle()→ Executed before the controller method.
@@ -55,7 +56,9 @@ public class CustomInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 //        logger.info("PreHandler: Before Controller Request received for {}", request.getRequestURI());
 
-        // Example of rejecting if no correlation id
+        /**
+         * Rejecting and stop execution if not CorrelationID Provided
+         */
         // if (request.getHeader("X-Correlation-ID") == null) {
         //     response.setStatus(HttpServletResponse.SC_NO_CONTENT);
         //     return false; // stop execution
@@ -102,8 +105,6 @@ public class CustomInterceptor implements HandlerInterceptor {
             logContext = LogContext.builder()
                     .timestamp(LocalDateTime.now().toString())
                     .correlationId(MDC.get("X-Correlation-ID"))
-                    .level("INFO")
-                    .environment("dev")
                     .logger(logger.getName())
                     .thread(Thread.currentThread().getName())
                     .httpMethod(request.getMethod())
@@ -119,7 +120,6 @@ public class CustomInterceptor implements HandlerInterceptor {
             // Structured JSON log for better parsing in ELK/Datadog
             logger.info(objectMapper.writeValueAsString(logContext));
         }
-
 
         // Clean up tenant context (ThreadLocal)
         TenantContext.clear();
